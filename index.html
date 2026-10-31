@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ultimate Driving Blog | BMW Enthusiast & News</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bmw: {
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            blue: '#0066B1',
+                            electric: '#00A3E0',
+                            mRed: '#E02B20',
+                            mDarkBlue: '#00205B',
+                            mLightBlue: '#009CDE'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+        /* Custom M Striping Border Accent */
+        .m-stripe-bg {
+            background: linear-gradient(115deg, #00205B 0%, #00205B 33%, #009CDE 33%, #009CDE 66%, #E02B20 66%, #E02B20 100%);
+        }
+        .m-stripe-border {
+            border-image: linear-gradient(to right, #00205B, #009CDE, #E02B20) 1;
+        }
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(26, 34, 52, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 163, 224, 0.3);
+            box-shadow: 0 12px 30px -10px rgba(0, 102, 177, 0.25);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0066B1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-bmw-electric selection:text-white">
+
+    <!-- Top M Power Accent Line -->
+    <div class="h-1.5 w-full m-stripe-bg"></div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-slate-700 flex items-center justify-center relative overflow-hidden shadow-md">
+                        <div class="absolute inset-0 flex flex-wrap">
+                            <div class="w-1/2 h-1/2 bg-white"></div>
+                            <div class="w-1/2 h-1/2 bg-bmw-blue"></div>
+                            <div class="w-1/2 h-1/2 bg-bmw-blue"></div>
+                            <div class="w-1/2 h-1/2 bg-white"></div>
+                        </div>
+                        <div class="absolute inset-1 rounded-full bg-slate-950 flex items-center justify-center">
+                            <span class="font-extrabold text-xs tracking-tighter text-white">M</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="#" class="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
+                            ULTIMATE <span class="text-transparent bg-clip-text bg-gradient-to-r from-bmw-electric to-blue-500">DRIVE</span>
+                        </a>
+                        <p class="text-[10px] uppercase tracking-widest text-slate-400 font-medium">The BMW Performance Journal</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-sm font-medium text-white hover:text-bmw-electric transition-colors">Home</a>
+                    <a href="#articles" class="text-sm font-medium text-slate-300 hover:text-bmw-electric transition-colors">Reviews</a>
+                    <a href="#models" class="text-sm font-medium text-slate-300 hover:text-bmw-electric transition-colors">Lineup</a>
+                    <a href="#about" class="text-sm font-medium text-slate-300 hover:text-bmw-electric transition-colors">About</a>
+                </nav>
+
+                <!-- Action Button & Search -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" id="searchInput" onkeyup="searchPosts()" placeholder="Search articles..." class="bg-slate-900/90 text-sm text-slate-200 pl-9 pr-4 py-2 rounded-full border border-slate-700 focus:outline-none focus:border-bmw-electric w-48 transition-all focus:w-60">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-500 text-xs"></i>
+                    </div>
+                    <button onclick="subscribeModal()" class="bg-gradient-to-r from-bmw-blue to-blue-600 hover:from-blue-600 hover:to-bmw-blue text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-all shadow-lg shadow-bmw-blue/20 flex items-center gap-2">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>Subscribe</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Nav -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#" class="block py-2 text-slate-200 hover:text-bmw-electric font-medium">Home</a>
+            <a href="#articles" class="block py-2 text-slate-300 hover:text-bmw-electric font-medium">Reviews</a>
+            <a href="#models" class="block py-2 text-slate-300 hover:text-bmw-electric font-medium">Lineup</a>
+            <a href="#about" class="block py-2 text-slate-300 hover:text-bmw-electric font-medium">About</a>
+            <div class="pt-2">
+                <input type="text" onkeyup="searchPosts()" placeholder="Search articles..." class="w-full bg-slate-800 text-sm text-slate-200 pl-4 pr-4 py-2 rounded-lg border border-slate-700 focus:outline-none">
+            </div>
+        </div>
+    </header>
+
+    <!-- News Ticker Banner -->
+    <div class="bg-slate-900/90 border-b border-slate-800 py-2.5 overflow-hidden text-xs">
+        <div class="max-w-7xl mx-auto px-4 flex items-center">
+            <span class="bg-bmw-mRed text-white font-bold px-2.5 py-0.5 rounded text-[10px] tracking-wider uppercase mr-3 flex-shrink-0 flex items-center gap-1">
+                <i class="fa-solid fa-bolt"></i> BREAKING
+            </span>
+            <div class="overflow-hidden whitespace-nowrap w-full">
+                <div class="inline-block animate-marquee text-slate-300">
+                    <span class="mx-4"><strong class="text-white">BMW M5 Hybrid (2025):</strong> 717 HP Twin-Turbo V8 Plug-In Unleashed</span>
+                    <span class="text-slate-600">•</span>
+                    <span class="mx-4"><strong class="text-white">i4 M50:</strong> BMW's Top-Selling M Division Car Goes Electric</span>
+                    <span class="text-slate-600">•</span>
+                    <span class="mx-4"><strong class="text-white">Neue Klasse Platform:</strong> Next Gen 3 Series Concept Production Confirmed</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+
+        <!-- Hero Featured Article Header -->
+        <section class="mb-12 relative rounded-3xl overflow-hidden glass-card border border-slate-800 group">
+            <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[480px]">
+                <!-- Hero Image Showcase -->
+                <div class="lg:col-span-7 relative min-h-[300px] lg:min-h-full overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=1400" 
+                         alt="BMW M5 Hybrid Flagship" 
+                         class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-slate-950/90"></div>
+                    <span class="absolute top-4 left-4 bg-bmw-mRed text-white font-bold text-xs uppercase px-3 py-1 rounded-full shadow-md tracking-wider">
+                        Featured Review
+                    </span>
+                </div>
+
+                <!-- Hero Content -->
+                <div class="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between bg-slate-950/80 backdrop-blur-md">
+                    <div>
+                        <div class="flex items-center space-x-3 text-xs text-bmw-electric mb-3 font-semibold">
+                            <span class="uppercase tracking-wider">M Division</span>
+                            <span>•</span>
+                            <span>7 Min Read</span>
+                            <span>•</span>
+                            <span class="text-slate-400">Oct 2026</span>
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-4 hover:text-bmw-electric transition-colors cursor-pointer" onclick="openModal('m5-hybrid')">
+                            2025 BMW M5 Hybrid: 717 HP Twin-Turbo V8 Meets Electric Precision
+                        </h1>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            The iconic super sedan enters a bold new era. Combining a ferocious 4.4-liter V8 with an advanced electric motor, the Seventh-Generation M5 redefines supercar performance with daily luxury.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Author" class="w-10 h-10 rounded-full border-2 border-bmw-blue object-cover">
+                            <div>
+                                <h4 class="text-sm font-semibold text-white">Alex Vance</h4>
+                                <p class="text-xs text-slate-400">Chief Automotive Editor</p>
+                            </div>
+                        </div>
+                        <button onclick="openModal('m5-hybrid')" class="bg-slate-800 hover:bg-bmw-blue text-white p-3 rounded-full transition-all group-hover:translate-x-1">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Filters -->
+        <section class="mb-8" id="articles">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                <div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                        Latest Articles <span class="h-2 w-2 rounded-full bg-bmw-electric animate-pulse"></span>
+                    </h2>
+                    <p class="text-xs text-slate-400">In-depth reviews, track tests, and future technology insights.</p>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="flex flex-wrap items-center gap-2" id="filterContainer">
+                    <button onclick="filterPosts('all')" class="filter-btn active px-4 py-2 rounded-full text-xs font-semibold bg-bmw-blue text-white transition-all shadow-md">
+                        All Stories
+                    </button>
+                    <button onclick="filterPosts('mpower')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+                        <i class="fa-solid fa-gauge-high text-bmw-mRed mr-1"></i> M Power
+                    </button>
+                    <button onclick="filterPosts('electric')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+                        <i class="fa-solid fa-bolt text-bmw-electric mr-1"></i> i-Electric
+                    </button>
+                    <button onclick="filterPosts('concept')" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+                        <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i> Neue Klasse
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Layout Grid: Posts + Sidebar -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Blog Posts Column (8 Cols) -->
+            <div class="lg:col-span-8 space-y-6" id="postsGrid">
+
+                <!-- Post 1: M3 CS -->
+                <article class="post-card glass-card rounded-2xl overflow-hidden grid grid-cols-1 sm:grid-cols-12 gap-0" data-category="mpower">
+                    <div class="sm:col-span-5 relative overflow-hidden min-h-[220px]">
+                        <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&q=80&w=800" alt="BMW M3 CS" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-bmw-mRed/90 backdrop-blur-sm text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded">
+                            M Power
+                        </span>
+                    </div>
+                    <div class="sm:col-span-7 p-5 sm:p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 text-xs text-slate-400 mb-2">
+                                <span>Track Test</span>
+                                <span>•</span>
+                                <span>5 Min Read</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 hover:text-bmw-electric transition-colors cursor-pointer" onclick="openModal('m3-cs')">
+                                Track Review: BMW M3 CS - Pure Lightweight Precision
+                            </h3>
+                            <p class="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
+                                We take the 543-hp limited edition M3 CS around Nürburgring. With carbon fiber hood, titanium silencer, and tweaked chassis geometry, is this the ultimate G80?
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs text-slate-400">By <strong>Alex Vance</strong></span>
+                            </div>
+                            <button onclick="openModal('m3-cs')" class="text-xs text-bmw-electric hover:text-white font-semibold flex items-center gap-1">
+                                Read Article <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Post 2: BMW i4 M50 -->
+                <article class="post-card glass-card rounded-2xl overflow-hidden grid grid-cols-1 sm:grid-cols-12 gap-0" data-category="electric">
+                    <div class="sm:col-span-5 relative overflow-hidden min-h-[220px]">
+                        <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&q=80&w=800" alt="BMW i4 Gran Coupe" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-bmw-electric/90 backdrop-blur-sm text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded">
+                            i-Electric
+                        </span>
+                    </div>
+                    <div class="sm:col-span-7 p-5 sm:p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 text-xs text-slate-400 mb-2">
+                                <span>Long Term Review</span>
+                                <span>•</span>
+                                <span>6 Min Read</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 hover:text-bmw-electric transition-colors cursor-pointer" onclick="openModal('i4-m50')">
+                                BMW i4 M50: 10,000 Miles with the EV Gran Coupé
+                            </h3>
+                            <p class="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
+                                Dual motors, 536 horsepower, and true BMW driving dynamics. Here is how BMW's best-selling M vehicle holds up during six months of daily driving and highway road trips.
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs text-slate-400">By <strong>Marcus Sterling</strong></span>
+                            </div>
+                            <button onclick="openModal('i4-m50')" class="text-xs text-bmw-electric hover:text-white font-semibold flex items-center gap-1">
+                                Read Article <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Post 3: Neue Klasse Concept -->
+                <article class="post-card glass-card rounded-2xl overflow-hidden grid grid-cols-1 sm:grid-cols-12 gap-0" data-category="concept">
+                    <div class="sm:col-span-5 relative overflow-hidden min-h-[220px]">
+                        <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&q=80&w=800" alt="BMW Concept Car" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-amber-500/90 backdrop-blur-sm text-slate-950 text-[10px] font-bold uppercase px-2.5 py-1 rounded">
+                            Neue Klasse
+                        </span>
+                    </div>
+                    <div class="sm:col-span-7 p-5 sm:p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 text-xs text-slate-400 mb-2">
+                                <span>Future Tech</span>
+                                <span>•</span>
+                                <span>4 Min Read</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 hover:text-bmw-electric transition-colors cursor-pointer" onclick="openModal('neue-klasse')">
+                                Vision Neue Klasse: Inside BMW's Next-Gen Panoramic Display
+                            </h3>
+                            <p class="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
+                                BMW is revolutionizing the cabin dashboard. The Panoramic Vision display projects key info across the entire width of the windshield. Here is how it operates.
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs text-slate-400">By <strong>Elena Rostova</strong></span>
+                            </div>
+                            <button onclick="openModal('neue-klasse')" class="text-xs text-bmw-electric hover:text-white font-semibold flex items-center gap-1">
+                                Read Article <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Post 4: BMW XM Label Red -->
+                <article class="post-card glass-card rounded-2xl overflow-hidden grid grid-cols-1 sm:grid-cols-12 gap-0" data-category="mpower">
+                    <div class="sm:col-span-5 relative overflow-hidden min-h-[220px]">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800" alt="BMW Sports Car" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-bmw-mRed/90 backdrop-blur-sm text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded">
+                            M Power
+                        </span>
+                    </div>
+                    <div class="sm:col-span-7 p-5 sm:p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 text-xs text-slate-400 mb-2">
+                                <span>SUV Powerhouse</span>
+                                <span>•</span>
+                                <span>8 Min Read</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 hover:text-bmw-electric transition-colors cursor-pointer" onclick="openModal('xm-red')">
+                                BMW XM Label Red: 738 HP of Unapologetic Presence
+                            </h3>
+                            <p class="text-xs text-slate-300 line-clamp-2 mb-4 leading-relaxed">
+                                Exploring the most powerful standalone M car ever built. With Toronto Red accents, sculpted ceiling, and V8 hybrid roar, it makes an unmistakable statement.
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs text-slate-400">By <strong>Alex Vance</strong></span>
+                            </div>
+                            <button onclick="openModal('xm-red')" class="text-xs text-bmw-electric hover:text-white font-semibold flex items-center gap-1">
+                                Read Article <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Sidebar (4 Cols) -->
+            <aside class="lg:col-span-4 space-y-8" id="about">
+
+                <!-- Author Bio Card -->
+                <div class="glass-panel rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 m-stripe-bg"></div>
+                    <div class="text-center">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300" alt="Alex Vance" class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-bmw-electric p-0.5 object-cover">
+                        <h3 class="text-lg font-bold text-white">Alex Vance</h3>
+                        <p class="text-xs text-bmw-electric font-medium mb-3">Founder & Chief Automotive Tester</p>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                            Welcome to <strong>Ultimate Drive</strong>. I’m a lifelong BMW enthusiast, Nürburgring lap addict, and automotive journalist dedicated to bringing you raw feedback on BMW’s flagship M cars and electric innovations.
+                        </p>
+                        <div class="flex justify-center space-x-3 text-slate-400">
+                            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-bmw-blue hover:text-white transition-colors"><i class="fa-brands fa-x-twitter text-xs"></i></a>
+                            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-bmw-blue hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xs"></i></a>
+                            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-bmw-blue hover:text-white transition-colors"><i class="fa-brands fa-youtube text-xs"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Specs Widget -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800" id="models">
+                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-bmw-electric"></i> Key BMW Benchmark Specs
+                    </h3>
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/80 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">M5 Hybrid (2025)</span>
+                                <span class="text-slate-400 text-[11px]">4.4L V8 + Electric Motor</span>
+                            </div>
+                            <span class="text-bmw-mRed font-extrabold text-sm">717 HP</span>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/80 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">M3 CS</span>
+                                <span class="text-slate-400 text-[11px]">3.0L Twin-Turbo Inline-6</span>
+                            </div>
+                            <span class="text-bmw-mRed font-extrabold text-sm">543 HP</span>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/80 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">i4 M50</span>
+                                <span class="text-slate-400 text-[11px]">Dual Electric Motor AWD</span>
+                            </div>
+                            <span class="text-bmw-electric font-extrabold text-sm">536 HP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter Subscription Card -->
+                <div class="glass-panel rounded-2xl p-6 bg-gradient-to-b from-slate-800/60 to-slate-900/90 relative">
+                    <i class="fa-solid fa-paper-plane text-bmw-electric text-3xl mb-3"></i>
+                    <h3 class="text-base font-bold text-white mb-1">M Power Dispatch</h3>
+                    <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                        Get exclusive drive reports, track telemetry, and early BMW model leaks delivered directly to your inbox weekly.
+                    </p>
+                    <form onsubmit="handleSubscribe(event)" class="space-y-3">
+                        <input type="email" required placeholder="Enter your email address" class="w-full bg-slate-950 text-xs text-slate-200 px-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-bmw-electric">
+                        <button type="submit" class="w-full bg-gradient-to-r from-bmw-blue to-blue-600 hover:from-blue-600 hover:to-bmw-blue text-white text-xs font-bold py-3 rounded-xl transition-all shadow-md">
+                            Join 18,500+ Enthusiasts
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Trending Tags -->
+                <div class="glass-panel rounded-2xl p-6">
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-hashtag text-bmw-mRed"></i> Trending Topics
+                    </h3>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 cursor-pointer">#M5Hybrid</span>
+                        <span class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 cursor-pointer">#NeueKlasse</span>
+                        <span class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 cursor-pointer">#xDrive</span>
+                        <span class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 cursor-pointer">#i4M50</span>
+                        <span class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 cursor-pointer">#Nurburgring</span>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 py-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <span class="text-lg font-extrabold text-white">ULTIMATE <span class="text-bmw-electric">DRIVE</span></span>
+                    </div>
+                    <p class="text-xs text-slate-400 max-w-sm leading-relaxed mb-4">
+                        An independent enthusiast publication celebrating Bavarian engineering, high-performance driving, and modern luxury automotive culture.
+                    </p>
+                    <p class="text-[11px] text-slate-500">
+                        Not affiliated with BMW AG. All trademarks and logos belong to Bayerische Motoren Werke AG.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Categories</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">M Performance</a></li>
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">BMW i-Electric</a></li>
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">Track Reports</a></li>
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">Classic Alpina & M</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Site Links</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">Editorial Guidelines</a></li>
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">Contact Author</a></li>
+                        <li><a href="#" class="hover:text-bmw-electric transition-colors">RSS Feed</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 Ultimate Drive Blog. Built for BMW Enthusiasts.</p>
+                <div class="flex items-center space-x-1">
+                    <span class="h-2 w-2 rounded-full bg-bmw-mLightBlue"></span>
+                    <span class="h-2 w-2 rounded-full bg-bmw-mDarkBlue"></span>
+                    <span class="h-2 w-2 rounded-full bg-bmw-mRed"></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Article Preview Modal Container -->
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl p-2 rounded-full hover:bg-slate-800">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent">
+                <!-- Modal content dynamically injected -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Article Modal Data Store
+        const articleData = {
+            'm5-hybrid': {
+                title: '2025 BMW M5 Hybrid: 717 HP Twin-Turbo V8 Meets Electric Precision',
+                category: 'M Division Flagship',
+                author: 'Alex Vance',
+                date: 'October 24, 2026',
+                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=1200',
+                body: `
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">The seventh-generation BMW M5 sedan (G90) marks the biggest technological leap in the model's iconic 40-year history. Powered by an M HYBRID drive system pairing a 4.4-liter V8 twin-turbo engine with an electric motor integrated into the eight-speed M Steptronic transmission, the new M5 generates a staggering <strong>717 horsepower and 738 lb-ft of torque</strong>.</p>
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">On the road, the power delivery is seamless. Electric torque fills instantly at low RPMs before the twin-scroll V8 roars into life. Zero to 60 mph arrives in 3.4 seconds, but the midrange acceleration from 50 to 90 mph feels like an airliner taking off.</p>
+                    <h4 class="text-white font-bold text-base my-3">Key Performance Highlights:</h4>
+                    <ul class="list-disc list-inside text-xs text-slate-300 space-y-2 mb-4">
+                        <li><strong>Combined Output:</strong> 717 HP / 1,000 Nm Torque</li>
+                        <li><strong>Pure Electric Range:</strong> Approx 25 miles (EV Mode)</li>
+                        <li><strong>Drivetrain:</strong> M xDrive all-wheel drive with selectable 2WD drift mode</li>
+                        <li><strong>Chassis:</strong> Adaptive M Suspension with active roll stabilization</li>
+                    </ul>
+                    <p class="text-slate-300 text-sm leading-relaxed">Despite the added weight of the hybrid battery pack, BMW's chassis tuning hides the mass well through corners, providing feedback through the thick M leather steering wheel that true enthusiasts demand.</p>
+                `
+            },
+            'm3-cs': {
+                title: 'Track Review: BMW M3 CS - Pure Lightweight Precision',
+                category: 'M Power Track Special',
+                author: 'Alex Vance',
+                date: 'October 18, 2026',
+                image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&q=80&w=1200',
+                body: `
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">The BMW M3 CS brings a sharper edge to the G80 platform. Boosting the twin-turbo 3.0-liter inline-six to 543 horsepower and shedding 75 pounds through carbon fiber reinforced plastic (CFRP) components, this car is built specifically for hot laps and canyon apexes.</p>
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">With unique engine mount tuning, raised boost pressure, and bespoke chassis calibration, turn-in response is razor sharp. The standard M Carbon ceramic brakes deliver tireless stopping power even after back-to-back hot laps.</p>
+                `
+            },
+            'i4-m50': {
+                title: 'BMW i4 M50: 10,000 Miles with the EV Gran Coupé',
+                category: 'i-Electric Long-Term Test',
+                author: 'Marcus Sterling',
+                date: 'October 12, 2026',
+                image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&q=80&w=1200',
+                body: `
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">Having logged 10,000 miles in BMW's electric sports sedan, one thing is clear: electric power doesn't mean sacrificing driver engagement. The dual-motor AWD setup generates 536 hp in Sport Boost mode, rocket-launching the car from 0-60 in 3.7 seconds with IconicSound soundtrack engineered by Hans Zimmer.</p>
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">Real-world winter range averaged 230 miles, while summer road trips easily cleared 260 miles between fast charging stops.</p>
+                `
+            },
+            'neue-klasse': {
+                title: 'Vision Neue Klasse: Inside BMW\'s Next-Gen Digital Cockpit',
+                category: 'Future Concept',
+                author: 'Elena Rostova',
+                date: 'October 05, 2026',
+                image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&q=80&w=1200',
+                body: `
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">The Neue Klasse isn't just a design study—it represents the architecture of upcoming 3 Series EVs starting in 2026. The highlight of the cabin is BMW Panoramic Vision, which projects vital telemetry across the entire lower edge of the windshield for both driver and front passenger.</p>
+                `
+            },
+            'xm-red': {
+                title: 'BMW XM Label Red: 738 HP of Unapologetic Presence',
+                category: 'M Performance SUV',
+                author: 'Alex Vance',
+                date: 'September 28, 2026',
+                image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1200',
+                body: `
+                    <p class="mb-4 text-slate-300 text-sm leading-relaxed">Standing as the most powerful road-going BMW M model ever made, the XM Label Red combines a high-revving V8 engine with electric drive for 738 HP. Beyond the numbers lies a lounge-like luxury cabin complete with sculptural illuminated headliner and vintage leather upholstery.</p>
+                `
+            }
+        };
+
+        // Modal Controls
+        function openModal(articleKey) {
+            const data = articleData[articleKey];
+            if (!data) return;
+
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div class="mb-4">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-bmw-electric">${data.category}</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white mt-1 leading-snug">${data.title}</h2>
+                    <div class="flex items-center space-x-3 text-xs text-slate-400 mt-2">
+                        <span>By ${data.author}</span>
+                        <span>•</span>
+                        <span>${data.date}</span>
+                    </div>
+                </div>
+                <div class="rounded-xl overflow-hidden mb-6 max-h-64 sm:max-h-80">
+                    <img src="${data.image}" alt="${data.title}" class="w-full h-full object-cover">
+                </div>
+                <div class="prose prose-invert max-w-none">
+                    ${data.body}
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-800 flex justify-end">
+                    <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-all">
+                        Close Preview
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close Modal on Background Click
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Filter Posts Logic
+        function filterPosts(category) {
+            const posts = document.querySelectorAll('.post-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-bmw-blue', 'text-white', 'shadow-md');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+
+            event.currentTarget.classList.remove('bg-slate-800', 'text-slate-300');
+            event.currentTarget.classList.add('bg-bmw-blue', 'text-white', 'shadow-md');
+
+            posts.forEach(post => {
+                if (category === 'all' || post.getAttribute('data-category') === category) {
+                    post.style.display = 'grid';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        // Article Search Filtering
+        function searchPosts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const posts = document.querySelectorAll('.post-card');
+
+            posts.forEach(post => {
+                const title = post.querySelector('h3').innerText.toLowerCase();
+                const excerpt = post.querySelector('p').innerText.toLowerCase();
+
+                if (title.includes(query) || excerpt.includes(query)) {
+                    post.style.display = 'grid';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+
+        // Mobile Nav Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Toast/Notification Function
+        function handleSubscribe(e) {
+            e.preventDefault();
+            alert("Thank you for subscribing to Ultimate Drive! You will receive our latest BMW articles and reviews directly in your inbox.");
+            e.target.reset();
+        }
+
+        function subscribeModal() {
+            const email = prompt("Enter your email address to get the latest BMW M & i news:");
+            if (email) {
+                alert("Welcome aboard! You have successfully subscribed to Ultimate Drive updates.");
+            }
+        }
+    </script>
+</body>
+</html>
